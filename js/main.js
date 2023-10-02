@@ -1,10 +1,15 @@
-function agregarTarea() {
-    const nuevaTarea = prompt("Introduce una nueva tarea:");
-    if (nuevaTarea !== null && nuevaTarea.trim() !== "") {
-        tareas.push({ tarea: nuevaTarea, completada: false });
-        console.log("Tarea agregada: " + nuevaTarea);
+let tareas = [];
+
+function agregarTarea(veces) {
+    for (let i = 0; i < veces; i++){
+        const nuevaTarea = prompt("Introduce una nueva tarea:");
+        if (nuevaTarea !== null && nuevaTarea.trim() !== "") {
+            tareas.push({ tarea: nuevaTarea, completada: false });
+            console.log("Tarea agregada: " + nuevaTarea + (i + 1));
+        }
     }
 }
+agregarTarea(4);
 
 function mostrarTareas() {
     console.log("Tareas:");
@@ -16,6 +21,7 @@ function mostrarTareas() {
         alert("No hay tareas en la lista.");
     }
 }
+mostrarTareas();
 
 function eliminarTodasLasTareas() {
     if (tareas.length > 0) {
@@ -28,5 +34,4 @@ function eliminarTodasLasTareas() {
         alert("No hay tareas para eliminar.");
     }
 }
-
-let tareas = [];
+eliminarTodasLasTareas();
