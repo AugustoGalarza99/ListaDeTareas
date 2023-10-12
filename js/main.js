@@ -1,37 +1,44 @@
-let tareas = [];
+const taskInput = document.getElementById("task");
+const taskList = document.getElementById("task-list");
 
-function agregarTarea(veces) {
-    for (let i = 0; i < veces; i++){
-        const nuevaTarea = prompt("Introduce una nueva tarea:");
-        if (nuevaTarea !== null && nuevaTarea.trim() !== "") {
-            tareas.push({ tarea: nuevaTarea, completada: false });
-            console.log("Tarea agregada: " + nuevaTarea + (i + 1));
+function addTask() {
+    const taskText = taskInput.value.trim();
+    if (taskText === "") return;
+
+    const taskItem = document.createElement("li");
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+
+    checkbox.addEventListener("change", function() {
+        if (this.checked) {
+            taskItem.classList.add("completed");
+        } else {
+            taskItem.classList.remove("completed");
         }
-    }
-}
-agregarTarea(4);
-
-function mostrarTareas() {
-    console.log("Tareas:");
-    tareas.forEach((tarea, index) => {
-        console.log(index + 1 + ". " + tarea.tarea + " - Completada: " + tarea.completada);
-        alert(index + 1 + ". " + tarea.tarea + " - Completada: " + tarea.completada);
     });
-    if (tareas.length === 0) {
-        alert("No hay tareas en la lista.");
-    }
-}
-mostrarTareas();
 
-function eliminarTodasLasTareas() {
-    if (tareas.length > 0) {
-        const confirmacion = confirm("¿Estás seguro de que deseas eliminar todas las tareas?");
-        if (confirmacion) {
-            tareas = [];
-            console.log("Todas las tareas han sido eliminadas.");
-        }
-    } else {
-        alert("No hay tareas para eliminar.");
-    }
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("button-eliminar")
+    deleteButton.textContent = "Eliminar";
+    deleteButton.addEventListener("click", function() {
+        taskItem.remove();
+    });
+
+    taskItem.textContent = taskText;
+    taskItem.appendChild(checkbox);
+    taskItem.appendChild(deleteButton);
+
+    taskList.appendChild(taskItem);
+
+    taskInput.value = "";
 }
-eliminarTodasLasTareas();
+
+function deleteCompletedTasks() {
+    const tasks = document.querySelectorAll("li");
+    tasks.forEach(task => {
+        const checkbox = task.querySelector("input[type='checkbox']");
+        if (checkbox.checked) {
+            task.remove();
+        }
+    });
+}

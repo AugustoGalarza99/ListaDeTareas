@@ -7,13 +7,20 @@
     <title>Lista de tareas</title>
 </head>
 <body>
-    
-    <h1>Lista de Tareas</h1>
-    
-    <button>Agregar Tarea</button>
-    <button>Mostrar Tareas</button>
-    <button>Eliminar Todas las Tareas</button>
-
+    <div class="todo-container">
+        <h1>Lista de Tareas</h1>
+        <div>
+            <img class="imagen" src="./multimedia/img/img_fondo.jpg" alt="fondo">
+        </div>
+        <div class="input-container">
+            <input type="text" id="task" placeholder="Añadir nueva tarea">
+            <button onclick="addTask()">Agregar</button>
+        </div>
+        <ul id="task-list">
+            
+        </ul>
+        <button onclick="deleteCompletedTasks()">Eliminar Tareas Completadas</button>
+    </div>
     <script src="./js/main.js"></script>
 </body>
 </html>
