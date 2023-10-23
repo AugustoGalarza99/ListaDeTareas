@@ -1,26 +1,21 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/styles.css">
-    <title>Lista de tareas</title>
+  <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-    <div class="todo-container">
-        <h1>Lista de Tareas</h1>
-        <div>
-            <img class="imagen" src="./multimedia/img/img_fondo.jpg" alt="fondo">
-        </div>
-        <div class="input-container">
-            <input type="text" id="task" placeholder="Añadir nueva tarea">
-            <button onclick="addTask()">Agregar</button>
-        </div>
-        <ul id="task-list">
-            
-        </ul>
-        <button onclick="deleteCompletedTasks()">Eliminar Tareas Completadas</button>
+  <div class="container">
+    
+    <h1>Lista de Tareas</h1>
+    <div class="input-container">
+    
+      <input type="text" id="taskInput" placeholder="Nueva tarea">
+      <button id="addTask">Agregar</button>
     </div>
-    <script src="./js/main.js"></script>
+    <ul id="taskList"></ul>
+    <button id="clearCompleted">Borrar Completadas</button>
+  </div>
+
+  <script src="./js/main.js"></script>
 </body>
 </html>
