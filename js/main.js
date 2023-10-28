@@ -1,16 +1,13 @@
-// Variables globales
 const taskInput = document.getElementById('taskInput');
 const addTaskButton = document.getElementById('addTask');
 const taskList = document.getElementById('taskList');
 const clearCompletedButton = document.getElementById('clearCompleted');
 let tasks = [];
 
-// Cargar tareas al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
   loadTasksFromLocalStorage();
 });
 
-// Agregar tarea al presionar Enter
 taskInput.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
     e.preventDefault();
@@ -18,12 +15,10 @@ taskInput.addEventListener('keypress', (e) => {
   }
 });
 
-// Agregar tarea
 addTaskButton.addEventListener('click', () => {
   addTaskFromInput();
 });
 
-// Marcar tarea como completada
 taskList.addEventListener('click', (e) => {
   if (e.target.classList.contains('task')) {
     const taskId = e.target.getAttribute('data-id');
@@ -34,12 +29,10 @@ taskList.addEventListener('click', (e) => {
   }
 });
 
-// Borrar tareas completadas
 clearCompletedButton.addEventListener('click', () => {
   clearCompletedTasks();
 });
 
-// Función para cargar tareas desde el almacenamiento local (array)
 function loadTasksFromLocalStorage() {
   const savedTasks = localStorage.getItem('tasks');
   if (savedTasks) {
@@ -48,7 +41,6 @@ function loadTasksFromLocalStorage() {
   }
 }
 
-// Función para agregar una tarea desde el input
 function addTaskFromInput() {
   const taskText = taskInput.value.trim();
   if (taskText === '') return;
@@ -57,21 +49,18 @@ function addTaskFromInput() {
   taskInput.value = '';
 }
 
-// Función para agregar una tarea
 function addTask(text) {
   const newTask = {
     id: Date.now(),
     title: text,
     completed: false,
   };
-
   tasks.push(newTask);
   saveTasksToLocalStorage();
-
   renderTasks();
 }
 
-// Función para renderizar las tareas en el DOM
+
 function renderTasks() {
   taskList.innerHTML = '';
   tasks.forEach((task) => {
@@ -89,7 +78,6 @@ function renderTasks() {
   });
 }
 
-// Función para marcar una tarea como completada
 function toggleTaskCompleted(taskId) {
   const taskIndex = tasks.findIndex((task) => task.id === parseInt(taskId));
   if (taskIndex !== -1) {
@@ -99,24 +87,70 @@ function toggleTaskCompleted(taskId) {
   }
 }
 
-// Función para eliminar una tarea
 function deleteTask(taskId) {
   tasks = tasks.filter((task) => task.id !== parseInt(taskId));
   saveTasksToLocalStorage();
   renderTasks();
 }
 
-// Función para borrar tareas completadas
 function clearCompletedTasks() {
   tasks = tasks.filter((task) => !task.completed);
   saveTasksToLocalStorage();
   renderTasks();
 }
 
-// Función para guardar las tareas en el almacenamiento local (array a JSON)
 function saveTasksToLocalStorage() {
   localStorage.setItem('tasks', JSON.stringify(tasks));
 }
-
-// Inicializar la lista de tareas al cargar la página
 renderTasks();
+
+//API DEL CLIMA
+const ciudadGeolocalizada = document.getElementById("ciudad-geolocalizada");
+const temperaturaGeolocalizada = document.getElementById("temperatura-geolocalizada");
+const informacionGeolocalizada = document.getElementById("informacion-geolocalizada");
+const humedadGeolocalizada = document.getElementById("humedad-geolocalizada");
+const vientoGeolocalizado = document.getElementById("viento-geolocalizado");
+const iconoGeolocalizado = document.getElementsByClassName("caja-ciudad");
+const permitirUbicacion = document.getElementById("permitir-ubicacion");
+const claveAPI = "01d0fccbf98a66fab9b504ea4ffcc847";
+
+function clima(){
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      let latitud = position.coords.latitude;
+      let longitud = position.coords.longitude;
+      let url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitud}&lon=${longitud}&appid=01d0fccbf98a66fab9b504ea4ffcc847&lang=es&units=metric`;
+      
+      fetch(url)
+        .then(respuesta => respuesta.json())
+        .then(info => {
+          
+          let ciudad = info.name;
+          ciudadGeolocalizada.textContent = ciudad;
+
+          let temperatura = info.main.temp;
+          temperaturaGeolocalizada.textContent = `${temperatura} °C`
+
+          let informacion = info.weather[0].description;
+          informacionGeolocalizada.textContent = informacion.toUpperCase();
+
+          let humedad = info.main.humidity;
+          humedadGeolocalizada.textContent = `${humedad} %`
+
+          let viento = ((info.wind.speed) * 3.6).toFixed(2);
+          vientoGeolocalizado.textContent = `${viento} Km/h`;
+
+          let icono = info.weather[0].icon;
+
+          let img = document.createElement("img");
+          img.src = `http://openweathermap.org/img/wn/${icono}.png`;
+          img.classList.add("icono")
+          iconoGeolocalizado[0].appendChild(img);
+        })
+        .catch(error => console.error(error));
+    });
+  } else {
+    console.log("Geolocalización no disponible en este navegador");
+  }
+}
+clima();
